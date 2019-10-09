@@ -9,6 +9,7 @@ import org.springframework.boot.web.embedded.netty.NettyServerCustomizer;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 
 import netty.leaks.dsl.AppDsl;
+import reactor.netty.http.HttpProtocol;
 
 @SpringBootApplication(exclude = {
         MongoReactiveDataAutoConfiguration.class
@@ -24,7 +25,7 @@ public class Application {
                 b.bean(Controller.class, Controller::new);
 
                 b.bean(NettyServerCustomizer.class, () -> s -> s.observe(b.ref(Filter1.class)));
-                // b.bean(NettyServerCustomizer.class, () -> s -> s.protocol(HttpProtocol.HTTP11, HttpProtocol.H2C));
+                b.bean(NettyServerCustomizer.class, () -> s -> s.protocol(HttpProtocol.HTTP11, HttpProtocol.H2C));
             });
 
             app
